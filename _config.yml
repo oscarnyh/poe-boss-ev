@@ -1,0 +1,6 @@
+#
+# Jekyll config for PoE Boss EV page
+#
+title: PoE Uber Boss EV
+include:
+  - index.html
