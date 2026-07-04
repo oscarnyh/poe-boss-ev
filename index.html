@@ -223,8 +223,8 @@ function toggleDetail(id) {
     btn.textContent = '\u25BC';
   }
 }
-let nameDesc = true;
-let evDesc = true;
+let nameDesc = false;
+let evDesc = false;
 function sortRows(compareFn) {
   var tbody = document.querySelector('#boss-table tbody');
   var rows = Array.from(tbody.querySelectorAll('tr.boss-row'));
@@ -239,7 +239,7 @@ function sortByName() {
   sortRows(function(a, b) {
     var na = a.querySelector('.boss-name').textContent.trim();
     var nb = b.querySelector('.boss-name').textContent.trim();
-    return nameDesc ? nb.localeCompare(na) : na.localeCompare(nb);
+    return nameDesc ? na.localeCompare(nb) : nb.localeCompare(na);
   });
   nameDesc = !nameDesc;
   document.getElementById('arrow-name').textContent = nameDesc ? '\u25BC' : '\u25B2';
@@ -249,7 +249,7 @@ function sortByEV() {
   sortRows(function(a, b) {
     var evA = parseFloat(a.querySelector('.boss-ev span').textContent);
     var evB = parseFloat(b.querySelector('.boss-ev span').textContent);
-    return evDesc ? evB - evA : evA - evB;
+    return evDesc ? evA - evB : evB - evA;
   });
   evDesc = !evDesc;
   document.getElementById('arrow-ev').textContent = evDesc ? '\u25BC' : '\u25B2';
