@@ -43,7 +43,7 @@ table#boss-table{width:100%;border-collapse:collapse;font-size:.85rem}
 <p class="subtitle">Expected value per kill — Ancestors league. Sorted by EV. Click boss to expand.</p>
 <table id="boss-table">
 <thead><tr>
-<th onclick="sortByName()">Boss <span class="sort-arrow" id="arrow-name">▼</span></th>
+<th onclick="sortByName()">Boss <span class="sort-arrow" id="arrow-name"></span></th>
 <th style="text-align:right" onclick="sortByEV()">EV / Kill <span class="sort-arrow" id="arrow-ev">▼</span></th>
 </tr></thead>
 <tbody>
@@ -243,7 +243,7 @@ function sortByName() {
   });
   nameDesc = !nameDesc;
   document.getElementById('arrow-name').textContent = nameDesc ? '\u25BC' : '\u25B2';
-  document.getElementById('arrow-ev').textContent = '\u25BC';
+  document.getElementById('arrow-ev').textContent = '';
 }
 function sortByEV() {
   sortRows(function(a, b) {
@@ -253,7 +253,7 @@ function sortByEV() {
   });
   evDesc = !evDesc;
   document.getElementById('arrow-ev').textContent = evDesc ? '\u25BC' : '\u25B2';
-  document.getElementById('arrow-name').textContent = '\u25BC';
+  document.getElementById('arrow-name').textContent = '';
 }
 </script>
 </body>
