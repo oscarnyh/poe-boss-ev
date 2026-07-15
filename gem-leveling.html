@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<base href="/poe-grid/">
+<title>PoE Grid</title><link rel="icon" type="image/x-icon" href="/poe-grid/icons/favicon.ico"><style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;-webkit-font-smoothing:antialiased}
+.container{max-width:920px;margin:0 auto;padding:40px 20px}
+header{background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);border:1px solid #21262d;border-radius:10px;padding:20px 24px 16px;margin-bottom:20px;position:relative;overflow:hidden}
+header::before{content:'';position:absolute;top:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,#3fb950,#e6b422);border-radius:1px}
+h1{color:#3fb950;font-size:1.3rem;font-weight:700;letter-spacing:.5px;margin:0 0 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1 .rate-badge{font-size:.68rem;font-weight:500;color:#e6b422;background:rgba(230,180,34,0.1);padding:3px 12px;border-radius:20px;border:1px solid rgba(230,180,34,0.3);letter-spacing:0;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.currency-icon{height:1em;vertical-align:middle;margin:0 2px}
+.header-info{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.subtitle{color:#8b949e;font-size:.78rem;font-weight:400;margin:0}
+.last-updated{color:#484f58;font-size:.68rem;margin:0}
+.header-sep{color:#30363d;font-size:.7rem}
+nav.tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid #21262d}
+nav.tabs a{display:block;padding:10px 20px;color:#8b949e;text-decoration:none;font-size:.85rem;font-weight:500;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+nav.tabs a:hover{color:#c9d1d9}
+nav.tabs a.active{color:#3fb950;border-bottom-color:#3fb950}
+.card{background:#161b22;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.3);overflow:hidden;border:1px solid #21262d}
+.card h2{color:#c9d1d9;font-size:1rem;font-weight:600;padding:14px 16px;border-bottom:1px solid #21262d}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;padding:10px 14px;border-bottom:1px solid #21262d;color:#8b949e;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.7px;background:#0d1117}
+td{padding:8px 14px;border-bottom:1px solid #21262d}
+tr:last-child td{border-bottom:none}
+tr:hover{background:#1c2128}
+table#boss-table{width:100%;border-collapse:collapse;font-size:.84rem}
+#boss-table thead{background:#0d1117}
+#boss-table th{text-align:left;padding:10px 12px;border-bottom:1px solid #21262d;color:#8b949e;font-weight:600;font-size:.65rem;text-transform:uppercase;letter-spacing:.6px;cursor:pointer;user-select:none}
+#boss-table th:not(:first-child){width:17%}
+#boss-table th:hover{color:#3fb950}
+#boss-table th .sort-arrow{font-size:.6rem;margin-left:3px;color:#3fb950;opacity:.7}
+.boss-row{cursor:pointer;transition:background .15s}
+.boss-row:hover{background:#1c2128}
+.boss-row td{padding:10px 12px;border-bottom:1px solid #21262d;white-space:nowrap}
+.boss-row .cost-icon{width:18px;height:18px;vertical-align:middle;margin-right:3px;border-radius:3px;object-fit:contain}
+.boss-row:last-child td{border-bottom:none}
+.boss-row .expand-btn{display:inline-block;width:16px;text-align:center;color:#484f58;font-size:.7rem;margin-right:3px}
+.boss-row .boss-name{color:#c9d1d9;font-weight:600;font-size:.82rem}
+.boss-row .boss-ev{color:#3fb950;text-align:right;font-weight:700;font-size:.82rem;font-variant-numeric:tabular-nums;width:17%}
+.detail-row{display:none}
+.detail-row.open{display:table-row}
+.detail-row td{padding:0 16px 20px;border-bottom:1px solid #21262d}
+.detail-row:last-child td{border-bottom:none}
+.detail-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:4px;background:#0d1117;border-radius:6px;overflow:hidden;border:1px solid #21262d}
+.detail-table th{text-align:left;padding:8px 10px;border-bottom:1px solid #21262d;color:#8b949e;font-weight:600;font-size:.65rem;text-transform:uppercase;letter-spacing:.6px;cursor:pointer;background:#0d1117}
+.detail-table th:hover{color:#3fb950!important}
+.detail-table th .s-arr{font-size:.6rem;margin-left:3px;color:#3fb950;opacity:.7}
+.detail-table td{padding:6px 10px;border-bottom:1px solid #21262d}
+.detail-table tr:last-child td{border-bottom:none}
+.detail-table tr:hover{background:#161b22}
+.cat-label{color:#8b949e;font-size:.7rem;font-weight:600;padding-top:12px!important;letter-spacing:.4px;text-transform:uppercase}
+.item-cell{display:flex;align-items:center;gap:8px}
+.item-icon{width:22px;height:22px;flex-shrink:0;object-fit:contain;border-radius:3px}
+.rate{color:#6e7681;text-align:center;font-size:.76rem;font-variant-numeric:tabular-nums}
+.price{color:#3fb950;text-align:right;font-weight:500;font-variant-numeric:tabular-nums}
+.price.neg{color:#da3633}
+.ev{color:#56d364;text-align:right;font-weight:500;font-variant-numeric:tabular-nums}
+.ev.neg{color:#da3633}
+.mod-table{font-size:.78rem}
+.mod-table td{padding:5px 10px}
+.card-header{cursor:pointer;padding:14px 16px;border-bottom:1px solid #21262d}
+.card-header h2{display:inline;font-size:1rem;font-weight:600;color:#c9d1d9}
+.collapsible-section[open] .card-header{border-bottom:1px solid #21262d}
+.worth{text-align:center;font-weight:600;font-size:.75rem;padding:2px 8px;border-radius:4px}
+.worth.yes{color:#3fb950;background:#1a3a1a}
+.worth.no{color:#da3633;background:#3a1a1a}
+.trade-link{color:#c9d1d9;text-decoration:none;cursor:pointer}
+.trade-link:hover{color:#3fb950;text-decoration:underline}
+.boss-cost{color:#da3633;text-align:right;font-weight:500;font-size:.82rem;font-variant-numeric:tabular-nums;width:17%}
+.boss-profit{color:#3fb950;text-align:right;font-weight:700;font-size:.82rem;font-variant-numeric:tabular-nums;width:17%}
+.boss-profit.neg{color:#da3633}
+.ident-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.ident-table thead{background:#0d1117}
+.ident-table th{text-align:left;padding:10px 12px;border-bottom:1px solid #21262d;color:#8b949e;font-weight:600;font-size:.65rem;text-transform:uppercase;letter-spacing:.6px}
+.ident-table th:not(:first-child){width:20%}
+.ident-row{cursor:pointer;user-select:none;transition:background .15s}
+.ident-row:hover{background:#1c2128}
+.ident-row td{padding:10px 12px;border-bottom:1px solid #21262d;white-space:nowrap;height:35px}
+.ident-row:last-child td{border-bottom:none}
+.ident-row .expand-btn{display:inline-block;width:16px;text-align:center;color:#484f58;font-size:.7rem;margin-right:3px}
+.ident-row.no-expand{cursor:default}
+.ident-row.no-expand .expand-btn{visibility:hidden}
+.ident-row .ident-name{color:#c9d1d9;font-weight:600;font-size:.82rem}
+.ident-row .cost-icon{width:18px;height:18px;vertical-align:middle;margin-right:3px;border-radius:3px;object-fit:contain}
+.ident-val{color:#c9d1d9;text-align:right;font-weight:500;font-size:.82rem;font-variant-numeric:tabular-nums}
+.ident-profit{color:#3fb950;text-align:right;font-weight:700;font-size:.82rem;font-variant-numeric:tabular-nums}
+.ident-profit.neg{color:#da3633}
+.ident-ev{color:#3fb950;text-align:right;font-weight:700;font-size:.82rem;font-variant-numeric:tabular-nums}
+.ident-ev.neg{color:#da3633}
+.ident-detail{display:none}
+.ident-detail.open{display:table-row}
+.ident-detail td{padding:0 16px 20px;border-bottom:1px solid #21262d}
+.ident-table .detail-table td{padding:6px 10px;white-space:nowrap;height:35px}
+.ident-table .detail-table{table-layout:auto}
+.detail-empty{color:#484f58;font-size:.8rem;text-align:center;padding:20px}
+.collapsible-section{margin-top:24px;background:#161b22;border:1px solid #21262d;border-radius:8px;overflow:hidden}
+.collapsible-section>summary{cursor:pointer;padding:14px 16px;color:#c9d1d9;font-weight:600;font-size:.95rem;list-style:none;user-select:none;transition:background .15s}
+.collapsible-section>summary::-webkit-details-marker{display:none}
+.collapsible-section>summary::before{content:"\25B6";display:inline-block;width:20px;color:#484f58;font-size:.75rem;transition:transform .15s}
+.collapsible-section[open]>summary::before{transform:rotate(90deg)}
+.collapsible-section>summary:hover{background:#1c2128}
+.collapsible-body{padding:0 16px 16px}
+.mod-note{color:#484f58;font-size:.75rem;margin-bottom:12px;line-height:1.5}
+.table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mod-ref-table{width:100%;border-collapse:collapse;font-size:.78rem;background:#0d1117;border-radius:6px;overflow:hidden;border:1px solid #21262d}
+.mod-ref-table th{text-align:left;padding:8px 10px;border-bottom:1px solid #21262d;color:#8b949e;font-weight:600;font-size:.65rem;text-transform:uppercase;letter-spacing:.6px;background:#0d1117}
+.mod-ref-table td{padding:6px 10px;border-bottom:1px solid #21262d}
+.mod-ref-table tr:last-child td{border-bottom:none}
+.placeholder{text-align:center;padding:80px 20px;color:#484f58}
+.placeholder h2{font-size:1.3rem;margin-bottom:12px;color:#8b949e}
+.placeholder p{font-size:.9rem}
+.jewel-select{background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font-size:.84rem;outline:none;cursor:pointer;flex:1;max-width:280px}
+.jewel-select:focus{border-color:#3fb950}
+</style></head><body><div class="container">
+<header><h1>PoE Grid<span class="rate-badge"><img class="currency-icon" src="/poe-grid/icons/Divine_Orb.png" alt="div"> : <img class="currency-icon" src="/poe-grid/icons/Chaos_Orb.png" alt="c"> = 1 : 617</span></h1><div class="header-info"><p class="subtitle">Current league: Mirage</p><span class="header-sep">·</span><p class="last-updated">Prices updated: 2026-07-16 00:30 GMT+8</p></div></header>
+<nav class="tabs">
+<a href="index.html">Bossing</a>
+<a href="identifying.html">Identifying</a>
+<a href="gem-leveling.html" class="active">Gem Leveling</a>
+<a href="tracing.html">Tracing</a>
+</nav>
+<div class="placeholder">
+<h2>Gem Leveling</h2>
+<p>Coming soon.</p>
+</div>
+</div>
+</body></html>
